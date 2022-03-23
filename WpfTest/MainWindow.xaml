@@ -1,0 +1,117 @@
+﻿<Window x:Class="WpfTest.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfTest" xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="550" Width="750" Closing="Window_Closing">
+
+    <Window.Resources>
+        <CollectionViewSource x:Key="SortedFontsCollection" Source="{Binding Source={x:Static Fonts.SystemFontFamilies}}" >
+            <CollectionViewSource.SortDescriptions>
+                <ComponentModel:SortDescription PropertyName="Source" />
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="New" Executed="NewExecuted"></CommandBinding>
+        <CommandBinding Command="Open" Executed="OpenExecuted"></CommandBinding>
+        <CommandBinding Command="Save" Executed="SaveExecuted"></CommandBinding>
+        <CommandBinding Command="Close" Executed="CloseExecuted"></CommandBinding>
+        <CommandBinding Command="Print" Executed="PrintExecuted"></CommandBinding>
+        <CommandBinding Command="PrintPreview" Executed="PreviewExecuted"></CommandBinding>
+    </Window.CommandBindings>
+    <DockPanel>
+        <Menu Height="24" Name="MenuBalk" DockPanel.Dock="Top">
+            <MenuItem Name="MenuOperaties" Header="Bestand" FontSize="14">
+                <MenuItem Name="BonNieuw" Header="Nieuw" Command="New" FontSize="14"/>
+                <MenuItem Name="BonOpenen" Header="Openen" Command="Open" FontSize="14" />
+                <MenuItem Name="BonOpslaan" Header="Opslaan" Command="Save" FontSize="14" IsEnabled="False"/>
+                <MenuItem Name="BonAfdrukken" Header="Afdrukken" Command="PrintPreview" FontSize="14" IsEnabled="False"/>
+                <Separator/>
+                <MenuItem Name="Afsluiten" Header="Afsluiten" Command="Close" FontSize="14"/>
+            </MenuItem>
+            <MenuItem Name="MenuKaarten" Header="Kaarten" FontSize="14">
+                <MenuItem Name="Kerstkaart" Click="Kerstkaart_Click" Header="Kerstkaart" FontSize="14"/>
+                <MenuItem Name="GeboorteKaart" Click="GeboorteKaart_Click" Header="GeboorteKaart" FontSize="14"/>
+            </MenuItem>
+        </Menu>
+        <StatusBar DockPanel.Dock="Bottom" Height="24">
+            <StatusBarItem Name="statusItem" Content= "{Binding ElementName=LettertypeComboBox, Path=SelectedValue}"/>
+        </StatusBar>
+        <StackPanel>
+
+
+            <Canvas Background="White" AllowDrop="True" MouseDown="canvas_MouseDown" 
+                DragOver="canvas_DragOver" x:Name="canvasArea" Height="500" Width="750">
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="500" />
+                        <ColumnDefinition Width="230" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="510" />
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Column="0" Grid.Row="0" Orientation="Vertical">
+                        <Image x:Name="convasImg" Width="430" Height="430"></Image>
+                        <TextBox Width="430" x:Name="TextWens" TextAlignment="Center" FontSize="25"
+                             Margin="0 -15 0 0"
+                         FontFamily="{Binding ElementName=comboBoxFonts, Path=SelectedItem}"                         
+                         ></TextBox>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
+                        <TextBlock TextAlignment="Center" Text="Kleur van de bal" FontSize="22" Margin="5"/>
+                        <ComboBox SelectionChanged="cirkelsKleuren_SelectionChanged" Name="cirkelsKleuren"
+                              Margin="0 0 0 80">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="{Binding Path=Naam}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+
+                        </ComboBox>
+                        <StackPanel>
+                            <Image Margin="30" Source="/Images/vuilnisbak.png" />
+                        </StackPanel>
+
+                        <ComboBox x:Name="comboBoxFonts" ItemsSource="{Binding Source={StaticResource SortedFontsCollection}}" />
+                        <Grid Margin="0 20 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="50" />
+                                <ColumnDefinition Width="63*"/>
+                                <ColumnDefinition Width="37*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock VerticalAlignment="Center" Grid.Column="0" Text="Grootte"/>
+                            <Label VerticalAlignment="Center" Grid.Column="1" Content="25" Name="fontsize"/>
+                            <StackPanel Grid.Row="0" Grid.Column="2">
+                                <RepeatButton Click="RepeatButtonGroter_Click" Width="30" Name="RepeatButtonGroter" Interval="100"
+ Delay="1000">+</RepeatButton>
+                                <RepeatButton Click="RepeatButtonKleiner_Click" Width="30" Name="RepeatButtonKleiner" Interval="100"
+ Delay="1000">-</RepeatButton>
+                            </StackPanel>
+                        </Grid>
+
+                    </StackPanel>
+                </Grid>
+            </Canvas>
+
+
+
+        </StackPanel>
+    </DockPanel>
+
+
+
+
+</Window>
