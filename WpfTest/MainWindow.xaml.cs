@@ -49,7 +49,8 @@ namespace WpfTest
         }
         void KaartKiezen()
         {
-            BonOpslaan.IsEnabled = true;
+            Opslaan.IsEnabled = true;
+            Afdrukken.IsEnabled = true;
         }
         void GeboortekaartActive()
         {
@@ -200,7 +201,7 @@ namespace WpfTest
                         convasImg.Source = imageBitmap;
                         for (int i = 0; i < bolCount; i++)
                         {
-                            Color kleur = (Color)ColorConverter.ConvertFromString(bestand.ReadLine()); 
+                            Color kleur = (Color)ColorConverter.ConvertFromString(bestand.ReadLine());
                             Brush brush = new SolidColorBrush(kleur);
                             sleepBal = new Ellipse();
                             sleepBal.Width = 40;
@@ -277,24 +278,53 @@ namespace WpfTest
             Nieuw();
         }
 
-        private void PrintExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            PrintDialog afdrukken = new PrintDialog();
-            if (afdrukken.ShowDialog() == true)
-            {
-                MessageBox.Show("Hier zou worden afgedrukt");
-            }
-        }
-
         private void PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            MessageBox.Show("Hier zou een afdrukvoorbeeld moeten verschijnen");
+            FixedDocument document = new FixedDocument();
+            document.DocumentPaginator.PageSize = new Size(600, 600);
+            PageContent inhoud = new PageContent();
+            document.Pages.Add(inhoud);
+            FixedPage pagina = new FixedPage();
+            inhoud.Child = pagina;
+
+            pagina.Width = 500;
+            pagina.Height = 500;
+            Image kaart = new Image();
+            kaart.Source = convasImg.Source;
+            kaart.Height = 400;
+            kaart.Width = 400;
+            pagina.Children.Add(kaart);
+            for (int i = canvasArea.Children.Count - 1; i >= 0; i += -1)
+            {
+                UIElement el = canvasArea.Children[i];
+                if (el is Ellipse)
+                {
+                    Ellipse eli = new Ellipse();
+                    Ellipse ee = (Ellipse)el;
+                    eli.Width = 40;
+                    eli.Height = 40;
+                    eli.Fill = ee.Fill;
+                
+                    pagina.Children.Add(eli);
+                };
+            }
+            pagina.Children.Add(Regel(TextWens.Text));
+
+
+            Afdrukvoorbeeld preview = new Afdrukvoorbeeld();
+            preview.Owner = this;
+            preview.AfdrukDocument = document;
+            preview.ShowDialog();
+        }
+        private TextBlock Regel(string tekst)
+        {
+            TextBlock deRegel = new TextBlock();
+            deRegel.Margin = new Thickness(0, 400, 0, 0);
+            deRegel.FontSize = TextWens.FontSize;
+            deRegel.Text = tekst;
+            return deRegel;
         }
 
-        private void HelpExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            MessageBox.Show("Dit is helpscherm", "Help", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-        }
 
     }
 }

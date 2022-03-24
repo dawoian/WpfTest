@@ -20,16 +20,15 @@
         <CommandBinding Command="Open" Executed="OpenExecuted"></CommandBinding>
         <CommandBinding Command="Save" Executed="SaveExecuted"></CommandBinding>
         <CommandBinding Command="Close" Executed="CloseExecuted"></CommandBinding>
-        <CommandBinding Command="Print" Executed="PrintExecuted"></CommandBinding>
         <CommandBinding Command="PrintPreview" Executed="PreviewExecuted"></CommandBinding>
     </Window.CommandBindings>
     <DockPanel>
         <Menu Height="24" Name="MenuBalk" DockPanel.Dock="Top">
             <MenuItem Name="MenuOperaties" Header="Bestand" FontSize="14">
-                <MenuItem Name="BonNieuw" Header="Nieuw" Command="New" FontSize="14"/>
-                <MenuItem Name="BonOpenen" Header="Openen" Command="Open" FontSize="14" />
-                <MenuItem Name="BonOpslaan" Header="Opslaan" Command="Save" FontSize="14" IsEnabled="False"/>
-                <MenuItem Name="BonAfdrukken" Header="Afdrukken" Command="PrintPreview" FontSize="14" IsEnabled="False"/>
+                <MenuItem Name="NieuwM" Header="Nieuw" Command="New" FontSize="14"/>
+                <MenuItem Name="Openen" Header="Openen" Command="Open" FontSize="14" />
+                <MenuItem Name="Opslaan" Header="Opslaan" Command="Save" FontSize="14" IsEnabled="False"/>
+                <MenuItem Name="Afdrukken" Header="Afdrukken" Command="PrintPreview" FontSize="14" IsEnabled="False"/>
                 <Separator/>
                 <MenuItem Name="Afsluiten" Header="Afsluiten" Command="Close" FontSize="14"/>
             </MenuItem>
