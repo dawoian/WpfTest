@@ -318,18 +318,23 @@ namespace WpfTest
             }
             pagina.Children.Add(Regel(TextWens.Text));
 
-
+            TextBlock deRegel = new TextBlock();
             Afdrukvoorbeeld preview = new Afdrukvoorbeeld();
             preview.Owner = this;
             preview.AfdrukDocument = document;
             preview.ShowDialog();
+
+            Regel(TextWens.Text);
         }
         private TextBlock Regel(string tekst)
         {
             TextBlock deRegel = new TextBlock();
-            deRegel.Margin = new Thickness(0, 400, 0, 0);
+            deRegel.Margin = new Thickness(0, 450, 0, 0);
             deRegel.FontSize = TextWens.FontSize;
+            deRegel.FontFamily = TextWens.FontFamily;
             deRegel.Text = tekst;
+            deRegel.TextAlignment = TextWens.TextAlignment;
+            deRegel.Width = 400;
             return deRegel;
         }
 
