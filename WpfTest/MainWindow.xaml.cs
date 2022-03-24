@@ -92,13 +92,9 @@ namespace WpfTest
             if (e.LeftButton == MouseButtonState.Pressed)
             {
 
-                DragDrop.DoDragDrop(ff, ff.Fill.ToString(), DragDropEffects.Copy);
-                if (ff.Parent == canvacNew)
-                {
-                    canvacNew.Children.Remove(ff);
-                    canvasArea.Children.Add(ff);
-                    EllipseMetKleur();
-                }
+                DragDrop.DoDragDrop(ff, new DataObject(DataFormats.Serializable, ff), DragDropEffects.Copy);
+
+    
                 Point position = ff.PointToScreen(new Point(0d, 0d)),
                  controlPosition = this.PointToScreen(new Point(0d, 0d));
                 position.X -= controlPosition.X;
@@ -112,10 +108,14 @@ namespace WpfTest
         }
         private void canvas_DragOver(object sender, DragEventArgs e)
         {
+            object data = e.Data.GetData(DataFormats.Serializable);
+            if (data is UIElement element)
+            {
 
-            Point dropPosition = e.GetPosition(canvasArea);
-            Canvas.SetLeft(sleepBal, dropPosition.X - 20);
-            Canvas.SetTop(sleepBal, dropPosition.Y - 20);
+                Point dropPosition = e.GetPosition(canvasArea);
+                Canvas.SetLeft(element, dropPosition.X - 22);
+                Canvas.SetTop(element, dropPosition.Y - 22);
+            }
         }
         private void canvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -333,6 +333,46 @@ namespace WpfTest
             return deRegel;
         }
 
+        private void canvasArea_Drop(object sender, DragEventArgs e)
+        {
+            object data = e.Data.GetData(DataFormats.Serializable);
+            if(data is UIElement element)
+            {
+                Point dropPosition = e.GetPosition(canvasArea);
+                Canvas.SetLeft(element, dropPosition.X-22);
+                Canvas.SetTop(element, dropPosition.Y-22);
+                if (!canvasArea.Children.Contains(element)) {
+                    canvacNew.Children.Remove(element);
+                    canvasArea.Children.Add(element);
+                }
+            }
+        }
+        private void canvasNew_Drop(object sender, DragEventArgs e)
+        {
+            object data = e.Data.GetData(DataFormats.Serializable);
+            if (data is UIElement element)
+            {
+                Point dropPosition = e.GetPosition(canvacNew);
+                Canvas.SetLeft(element, dropPosition.X - 22);
+                Canvas.SetTop(element, dropPosition.Y - 22);
+                if (!canvasArea.Children.Contains(element))
+                {
+                    canvacNew.Children.Remove(element);
 
+                }
+            }
+        }
+        private void canvacNew_DragLeave(object sender, DragEventArgs e)
+        {
+            if(e.OriginalSource == canvacNew) { 
+            object data = e.Data.GetData(DataFormats.Serializable);
+            if (data is UIElement element)
+            {
+                    EllipseMetKleur();
+                    canvasArea.Children.Add(element);
+                    
+            }
+            }
+        }
     }
 }

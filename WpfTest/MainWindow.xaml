@@ -44,7 +44,8 @@
 
 
             <Canvas Background="White" AllowDrop="True" MouseDown="canvas_MouseDown" 
-                DragOver="canvas_DragOver" x:Name="canvasArea" Height="500" Width="750">
+                DragOver="canvas_DragOver" x:Name="canvasArea" Height="500" Width="750"
+                    Drop="canvasArea_Drop">
 
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -75,7 +76,9 @@
 
                         </ComboBox>
                         <Canvas x:Name="canvacNew" Width="44" Height="44" Background="White"
-                                AllowDrop="True"></Canvas>
+                                DragLeave="canvacNew_DragLeave"
+                                AllowDrop="True"
+                                DragOver="canvasNew_Drop"></Canvas>
                         <StackPanel>
                             <Image Margin="30" Source="/Images/vuilnisbak.png" />
                         </StackPanel>
