@@ -64,7 +64,7 @@
                     <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Vertical">
                         <TextBlock TextAlignment="Center" Text="Kleur van de bal" FontSize="22" Margin="5"/>
                         <ComboBox SelectionChanged="cirkelsKleuren_SelectionChanged" Name="cirkelsKleuren"
-                              Margin="0 0 0 80">
+                              Margin="0 0 0 10">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
@@ -74,6 +74,8 @@
                             </ComboBox.ItemTemplate>
 
                         </ComboBox>
+                        <Canvas x:Name="canvacNew" Width="44" Height="44" Background="White"
+                                AllowDrop="True"></Canvas>
                         <StackPanel>
                             <Image Margin="30" Source="/Images/vuilnisbak.png" />
                         </StackPanel>
@@ -108,7 +110,8 @@
 
 
         </StackPanel>
-    </DockPanel>
+    </DockPanel>
+
 
 
 

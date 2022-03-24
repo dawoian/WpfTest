@@ -22,8 +22,8 @@ namespace WpfTest
     public partial class MainWindow : Window
     {
         Ellipse sleepBal;
-        int positionX = 590;
-        int positionY = 80;
+        //int positionX = 590;
+        //int positionY = 80;
 
         public MainWindow()
         {
@@ -71,9 +71,10 @@ namespace WpfTest
             sleepBal.Stroke = Brushes.Black;
             sleepBal.StrokeThickness = 4;
             sleepBal.Fill = brush;
-            canvasArea.Children.Add(sleepBal);
-            Canvas.SetLeft(sleepBal, positionX);
-            Canvas.SetTop(sleepBal, positionY);
+            //canvasArea.Children.Add(sleepBal);
+            canvacNew.Children.Add(sleepBal);
+            //Canvas.SetLeft(sleepBal, 0);
+            //Canvas.SetTop(sleepBal, 0);
             sleepBal.MouseMove += exEllipse_MouseMove;
         }
 
@@ -92,6 +93,12 @@ namespace WpfTest
             {
 
                 DragDrop.DoDragDrop(ff, ff.Fill.ToString(), DragDropEffects.Copy);
+                if (ff.Parent == canvacNew)
+                {
+                    canvacNew.Children.Remove(ff);
+                    canvasArea.Children.Add(ff);
+                    EllipseMetKleur();
+                }
                 Point position = ff.PointToScreen(new Point(0d, 0d)),
                  controlPosition = this.PointToScreen(new Point(0d, 0d));
                 position.X -= controlPosition.X;
@@ -107,7 +114,6 @@ namespace WpfTest
         {
 
             Point dropPosition = e.GetPosition(canvasArea);
-
             Canvas.SetLeft(sleepBal, dropPosition.X - 20);
             Canvas.SetTop(sleepBal, dropPosition.Y - 20);
         }
@@ -217,6 +223,7 @@ namespace WpfTest
                         comboBoxFonts.SelectedValue = new FontFamily(bestand.ReadLine());
                         fontsize.Content = bestand.ReadLine();
                         statusItem.Content = dlg.FileName;
+                        KaartKiezen();
                     }
                 }
             }
@@ -281,18 +288,17 @@ namespace WpfTest
         private void PreviewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
             FixedDocument document = new FixedDocument();
-            document.DocumentPaginator.PageSize = new Size(600, 600);
+            document.DocumentPaginator.PageSize = new Size(500, 500);
             PageContent inhoud = new PageContent();
             document.Pages.Add(inhoud);
             FixedPage pagina = new FixedPage();
             inhoud.Child = pagina;
-
             pagina.Width = 500;
             pagina.Height = 500;
             Image kaart = new Image();
             kaart.Source = convasImg.Source;
-            kaart.Height = 400;
-            kaart.Width = 400;
+            kaart.Height = 430;
+            kaart.Width = 430;
             pagina.Children.Add(kaart);
             for (int i = canvasArea.Children.Count - 1; i >= 0; i += -1)
             {
@@ -303,8 +309,10 @@ namespace WpfTest
                     Ellipse ee = (Ellipse)el;
                     eli.Width = 40;
                     eli.Height = 40;
+                    eli.Stroke = Brushes.Black;
+                    eli.StrokeThickness = 4;
                     eli.Fill = ee.Fill;
-                
+                    eli.Margin = new Thickness(Canvas.GetLeft(ee)-40, Canvas.GetTop(ee)-4, 0, 0);
                     pagina.Children.Add(eli);
                 };
             }
